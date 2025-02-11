@@ -1,7 +1,7 @@
-use crate::errors::ReceiptoErrorCode;
+use crate::errors::ReceiptErrorCode;
 use anchor_lang::{prelude::*, system_program};
 use anchor_spl::{
-    token::{Token, TokenAccount},
+    token::{Token, TokenAccount as SplTokenAccount},
     token_2022::{
         self,
         spl_token_2022::{
@@ -13,8 +13,10 @@ use anchor_spl::{
         },
     },
     token_interface::{
-        initialize_account3, spl_token_2022::extension::BaseStateWithExtensions,
-        InitializeAccount3, Mint,
+        self,
+        initialize_account3, InitializeAccount3,
+        spl_token_2022::extension::BaseStateWithExtensions,
+        Mint,
     },
 };
 use std::collections::HashSet;
@@ -91,13 +93,13 @@ pub fn token_mint_to<'a>(
     amount: u64,
     signer_seeds: &[&[&[u8]]],
 ) -> Result<()> {
-    token_2022::mint_to(
+    token_interface::mint_to(
         CpiContext::new_with_signer(
             token_program,
-            token_2022::MintTo {
+            token_interface::MintTo {
+                mint,
                 to: destination,
                 authority,
-                mint,
             },
             signer_seeds,
         ),
@@ -133,7 +135,7 @@ pub fn get_transfer_inverse_fee(mint_info: &AccountInfo, post_fee_amount: u64) -
         return Ok(0);
     }
     if post_fee_amount == 0 {
-        return err!(ReceiptoErrorCode::InvalidInput);
+        return err!(ReceiptErrorCode::InvalidInput);
     }
     let mint_data = mint_info.try_borrow_data()?;
     let mint = StateWithExtensions::<spl_token_2022::state::Mint>::unpack(&mint_data)?;
@@ -218,7 +220,7 @@ pub fn create_token_account<'a>(
                 &required_extensions,
             )?
         } else {
-            TokenAccount::LEN
+            SplTokenAccount::LEN
         }
     };
     create_or_allocate_account(

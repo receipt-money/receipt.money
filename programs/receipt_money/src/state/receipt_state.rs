@@ -2,7 +2,7 @@ use anchor_lang::prelude::*;
 use crate::ID;
 
 #[account]
-pub struct ReceiptoState {
+pub struct ReceiptState {
     pub authority: Pubkey,
     pub token_mint: Pubkey,
     pub token_mint_vault: Pubkey,
@@ -15,7 +15,7 @@ pub struct ReceiptoState {
     pub receipt_mint_vault_bump: u8,
 }
 
-impl ReceiptoState {
+impl ReceiptState {
     pub const LEN: usize = 8 + // discriminator
         32 + // authority
         32 + // token_mint
@@ -28,22 +28,18 @@ impl ReceiptoState {
         1 + // receipt_mint_bump
         1; // receipt_mint_vault_bump
 
-    pub const STATE_SEED: &'static [u8] = b"receipto_state";
-    pub const VAULT_AUTHORITY_SEED: &'static [u8] = b"receipto_vault_authority";
-    pub const TOKEN_MINT_VAULT_SEED: &'static [u8] = b"receipto_token_mint_vault";
-    pub const RECEIPT_MINT_VAULT_SEED: &'static [u8] = b"receipto_receipt_mint_vault";
-    pub const RECEIPT_MINT_SEED: &'static [u8] = b"receipto_receipt_mint";
+    pub const STATE_SEED: &'static str = "receipt_state";
+    pub const VAULT_AUTHORITY_SEED: &'static str = "receipt_vault_authority";
+    pub const MINT_SEED: &'static str = "receipt_mint";
+    pub const MINT_VAULT_SEED: &'static str = "receipt_mint_vault";
 
-    pub fn find_token_mint_vault_authority() -> (Pubkey, u8) {
+    pub fn find_mint_vault_authority(receipt_state: &Pubkey, token_mint: &Pubkey) -> (Pubkey, u8) {
         Pubkey::find_program_address(
-            &[Self::TOKEN_MINT_VAULT_SEED],
-            &ID,
-        )
-    }
-
-    pub fn find_receipt_mint_vault_authority() -> (Pubkey, u8) {
-        Pubkey::find_program_address(
-            &[Self::RECEIPT_MINT_VAULT_SEED],
+            &[
+                Self::MINT_VAULT_SEED.as_bytes(),
+                receipt_state.as_ref(),
+                token_mint.as_ref(),
+            ],
             &ID,
         )
     }

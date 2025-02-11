@@ -2,7 +2,7 @@
 use anchor_lang::prelude::*;
 
 #[error_code]
-pub enum ReceiptoErrorCode {
+pub enum ReceiptErrorCode {
     /// The input token is invalid for swap.
     #[msg("InvalidInput")]
     InvalidInput,

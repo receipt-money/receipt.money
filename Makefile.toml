@@ -4,36 +4,29 @@ skip_core_tasks = true
 
 [tasks.build_program]
 script = """
-anchor build
+RUSTUP_TOOLCHAIN="nightly-2024-11-19" anchor build
 """
 
 [tasks.deploy_program]
 script = """
-cp simulation/.keys/solistic_staking-keypair.json target/deploy/solistic_staking-keypair.json
+cp .keys/receipt_money-keypair.json target/deploy/receipt_money-keypair.json
 anchor deploy
 """
 dependencies = ["build_program"]
 
 [tasks.copy_files]
 script = """
-cp target/idl/solistic_staking.json tests/liquid-staking-test-script/targets/idl/solistic_staking.json
-cp target/types/solistic_staking.ts tests/liquid-staking-test-script/targets/types/solistic_staking.ts
-cp target/idl/solistic_staking.json simulation/targets/idl/solistic_staking.json
-cp target/types/solistic_staking.ts simulation/targets/types/solistic_staking.ts
+anchor idl upgrade -f target/idl/receipt_money.json ReMoLWd9XjJQTuSoT9tuKtfbjGy8FtVXX3dqgBHg1gy
+cp target/idl/receipt_money.json simulation/targets/idl/receipt_money.json
+cp target/types/receipt_money.ts simulation/targets/types/receipt_money.ts
+cp target/types/receipt_money.ts simulation/src/types/receipt_money.ts
 """
 
 [tasks.prerequisites]
 script = """
 solana-keygen new --outfile admin.json  
-solana-keygen new --outfile cranker.json 
-solana-keygen new --outfile lpMint.json 
-solana-keygen new --outfile operationalSolAccount.json 
-solana-keygen new --outfile solistic-buffer.json 
-solana-keygen new --outfile solistic-staking-program.json 
-solana-keygen new --outfile ssolMint.json 
-solana-keygen new --outfile stakeList.json 
-solana-keygen new --outfile stateAccount.json 
-solana-keygen new --outfile validatorsList.json
+solana-keygen new --outfile receipt_money-buffer.json 
+solana-keygen new --outfile receipt_money-program.json 
 """
 
 [tasks.do_all]

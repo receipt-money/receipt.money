@@ -7,10 +7,10 @@ pub mod errors;
 
 use instructions::*;
 
-declare_id!("35thGDc1684qSaXPYYmPgPTgtBfsY2B979g2wvrnndsE");
+declare_id!("ReMoLWd9XjJQTuSoT9tuKtfbjGy8FtVXX3dqgBHg1gy");
 
 #[program]
-pub mod receipto_fi {
+pub mod receipt_money {
     use super::*;
 
     pub fn initialize(ctx: Context<Initialize>) -> Result<()> {

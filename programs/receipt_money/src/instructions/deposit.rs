@@ -2,10 +2,10 @@ use anchor_lang::{
     accounts::interface_account::InterfaceAccount,
     prelude::*,
 };
-use anchor_spl::token_interface::{Mint, TokenAccount, TokenInterface};
+use anchor_spl::token_interface::{self, Mint, TokenAccount, TokenInterface};
 use crate::{
-    state::ReceiptoState, 
-    utils::{token_mint_to, transfer_from_user_to_token_vault},
+    state::ReceiptState, 
+    utils::transfer_from_user_to_token_vault,
 };
 
 #[derive(Accounts)]
@@ -17,7 +17,7 @@ pub struct Deposit<'info> {
         mut,
         associated_token::mint = token_mint,
         associated_token::authority = user,
-        token::token_program = token_mint_program,
+        associated_token::token_program = token_mint_program,
     )]
     pub user_mint_token_account: Box<InterfaceAccount<'info, TokenAccount>>,
     
@@ -25,7 +25,7 @@ pub struct Deposit<'info> {
         mut,
         associated_token::mint = crypto_receipt_mint,
         associated_token::authority = user,
-        token::token_program = crypto_receipt_mint_program,
+        associated_token::token_program = crypto_receipt_mint_program,
     )]
     pub user_crypto_receipt_token_account: Box<InterfaceAccount<'info, TokenAccount>>,
     
@@ -35,21 +35,21 @@ pub struct Deposit<'info> {
         has_one = token_mint_vault,
         has_one = crypto_receipt_mint,
         seeds = [
-            ReceiptoState::STATE_SEED, 
-            receipto_state.token_mint.as_ref(),
+            ReceiptState::STATE_SEED.as_bytes(), 
+            receipt_state.token_mint.as_ref(),
         ],
-        bump = receipto_state.bump,
+        bump = receipt_state.bump,
     )]
-    pub receipto_state: Account<'info, ReceiptoState>,
+    pub receipt_state: Account<'info, ReceiptState>,
     
     pub token_mint: Box<InterfaceAccount<'info, Mint>>,
 
     #[account(
         seeds = [
-            ReceiptoState::VAULT_AUTHORITY_SEED, 
-            receipto_state.key().as_ref()
+            ReceiptState::VAULT_AUTHORITY_SEED.as_bytes(), 
+            receipt_state.key().as_ref()
         ],
-        bump = receipto_state.vault_authority_bump,
+        bump,
     )]
     /// CHECK: This is both vault authority and mint authority of crToken
     pub vault_authority: UncheckedAccount<'info>,
@@ -57,29 +57,32 @@ pub struct Deposit<'info> {
     #[account(
         mut,
         seeds = [   
-            ReceiptoState::TOKEN_MINT_VAULT_SEED, 
-            receipto_state.key().as_ref(),
+            ReceiptState::MINT_VAULT_SEED.as_bytes(), 
+            receipt_state.key().as_ref(),
+            token_mint.key().as_ref(),
         ],
-        bump = receipto_state.token_mint_vault_bump,
+        bump = receipt_state.token_mint_vault_bump,
     )]
     pub token_mint_vault: Box<InterfaceAccount<'info, TokenAccount>>,
     
     #[account(
+        mut,
         seeds = [
-            ReceiptoState::RECEIPT_MINT_SEED, 
-            receipto_state.key().as_ref(),
+            ReceiptState::MINT_SEED.as_bytes(), 
+            receipt_state.key().as_ref(),
         ],
-        bump = receipto_state.receipt_mint_bump,
+        bump = receipt_state.receipt_mint_bump,
     )]
     pub crypto_receipt_mint: Box<InterfaceAccount<'info, Mint>>,
 
     #[account(
         mut,
         seeds = [
-            ReceiptoState::RECEIPT_MINT_VAULT_SEED,
-            receipto_state.key().as_ref(),
+            ReceiptState::MINT_VAULT_SEED.as_bytes(),
+            receipt_state.key().as_ref(),
+            crypto_receipt_mint.key().as_ref(),
         ],
-        bump = receipto_state.receipt_mint_vault_bump,
+        bump = receipt_state.receipt_mint_vault_bump,
     )]
     pub crypto_receipt_mint_vault: Box<InterfaceAccount<'info, TokenAccount>>,
     /// Spl token program or token program 2022
@@ -89,8 +92,8 @@ pub struct Deposit<'info> {
 } 
 
 pub fn handle_deposit(ctx: Context<Deposit>, amount: u64) -> Result<()> {
-    let receipto_state = &mut ctx.accounts.receipto_state;
-    let receipto_state_pubkey = receipto_state.key();
+    let receipt_state = &mut ctx.accounts.receipt_state;
+    let receipt_state_pubkey = receipt_state.key();
     // Transfer tokens from user to vault
     transfer_from_user_to_token_vault(
         ctx.accounts.user.to_account_info(),
@@ -101,22 +104,21 @@ pub fn handle_deposit(ctx: Context<Deposit>, amount: u64) -> Result<()> {
         amount,
         ctx.accounts.token_mint.decimals,
     )?;
-
+    msg!("Transferring tokens from user to vault done");
     // Mint receipt tokens
-    let seeds = &[
-        ReceiptoState::VAULT_AUTHORITY_SEED,
-        receipto_state_pubkey.as_ref(),
-        &[receipto_state.vault_authority_bump],
-    ];
-    let signer = &[&seeds[..]];
-
-    token_mint_to(
-        ctx.accounts.vault_authority.to_account_info(),
-        ctx.accounts.crypto_receipt_mint_program.to_account_info(),
-        ctx.accounts.crypto_receipt_mint.to_account_info(),
-        ctx.accounts.user_crypto_receipt_token_account.to_account_info(),
-        amount,
-        signer,
-    )?;
+    let signer_seeds: &[&[&[u8]]] = &[&[
+        ReceiptState::VAULT_AUTHORITY_SEED.as_bytes(), 
+        receipt_state_pubkey.as_ref(),
+        &[ctx.bumps.vault_authority],
+    ]];
+    msg!("Minting receipt tokens");
+    let cpi_accounts = token_interface::MintTo {
+        mint: ctx.accounts.crypto_receipt_mint.to_account_info(),
+        to: ctx.accounts.user_crypto_receipt_token_account.to_account_info(),
+        authority: ctx.accounts.vault_authority.to_account_info(),
+    };
+    let cpi_program = ctx.accounts.crypto_receipt_mint_program.to_account_info();
+    let cpi_ctx = CpiContext::new(cpi_program, cpi_accounts).with_signer(signer_seeds);
+    token_interface::mint_to(cpi_ctx, amount)?;
     Ok(())
 } 
