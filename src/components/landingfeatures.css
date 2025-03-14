@@ -1,0 +1,166 @@
+.feature-heading {
+  font-family: 'Railway', sans-serif;
+  font-weight: 600;
+  color: #f9faf2;
+  margin: 0;
+  text-align: center;
+  font-size: 1.3rem;
+  margin-bottom: 2%;
+}
+
+/* For tablet */
+@media only screen and (min-width: 768px) and (max-width: 991px) {
+  .feature-heading {
+    font-size: 1.4rem;
+    margin-bottom: 2%;
+    text-align: left;
+  }
+}
+
+
+/* For smaller computers */
+@media only screen and (min-width: 992px) and (max-width: 1299px) {
+  .feature-heading {
+    font-size: 1.25rem;
+    margin-bottom: 1.5%;
+    text-align: left;
+  }
+}
+
+/* For larger computer */
+@media only screen and (min-width: 1300px) {
+  .feature-heading {
+    font-size: 1.5rem;
+    margin-bottom: 2%;
+    text-align: left;
+  }
+}
+
+.feature-text {
+  font-family: 'Railway', sans-serif;
+  font-weight: 500;
+  color: #b3b1c4;
+  margin: 0;
+  text-align: center;
+  line-height: 1.2;
+  font-size: 1rem;
+  margin-top: 0;
+}
+
+/* For tablet */
+@media only screen and (min-width: 768px) and (max-width: 991px) {
+  .feature-text {
+    font-size: 1.1rem;
+    margin-top: 0;
+    text-align: left;
+  }
+}
+
+/* For smaller computers */
+@media only screen and (min-width: 992px) and (max-width: 1299px) {
+  .feature-text {
+    font-size: 1.0rem;
+    margin-top: 0;
+    text-align: left;
+  }
+}
+
+/* For larger computer */
+@media only screen and (min-width: 1300px) {
+  .feature-text {
+    font-size: 1.1rem;
+    margin-top: 0;
+    text-align: left;
+  }
+}
+
+.feature-container {
+  padding: 3%;
+  border: 1px solid #6f8586;
+  border-radius: 20px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  width: 100%;
+}
+
+.feature-container:hover {
+  background-image: linear-gradient(to right, #283a41, #11192b);
+  border: 1px solid #97adae;
+}
+
+.type-container {
+  padding: 3%;
+  border: 1px solid #6f8586;
+  border-radius: 20px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  width: 100%;
+  cursor: pointer;
+}
+
+.type-container:hover {
+  border: 1px solid #97adae;
+}
+
+.type-container-disabled {
+  padding: 3%;
+  border: 1px solid #6f8586;
+  border-radius: 20px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  width: 100%;
+}
+
+@media only screen and (max-width: 767px) {
+  .feature-container {
+    padding: 2%;
+  }
+}
+
+/* For tablet */
+@media only screen and (min-width: 768px) {
+  .feature-container {
+    padding: 1%;
+    width: 40%;
+    height: auto;
+    background-color: rgba(22, 33, 37, 0.7);
+  }
+}
+
+/* For computer */
+@media only screen and (min-width: 992px) {
+  .feature-container {
+    padding: 3%;
+    width: 100%;
+    height: auto;
+    background: transparent;
+  }
+}
+
+.feature-wrapper {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 2%;
+  margin-left: 2%;
+  margin-right: 2%;
+}
+
+/* For tablet */
+@media only screen and (min-width: 768px) {
+  .feature-wrapper {
+    gap: 1%;
+  }
+}
+
+.feature-column {
+  flex: 1;
+  display: flex;
+}
+
+.feature-content {
+  display: flex;
+  align-items: center;
+}

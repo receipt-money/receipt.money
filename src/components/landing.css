@@ -1,0 +1,88 @@
+/* Define the font styles */
+.heading {
+  font-family: 'Railway', sans-serif;
+  font-weight: 800;
+  /* Extra bold */
+  color: white;
+  color: transparent;
+  background: linear-gradient(90deg, #f9faf2, #6f8586);
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+  margin: 0;
+  line-height: 1;
+  white-space: normal;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  outline: none;
+  user-select: none;
+}
+
+/* Default for mobile */
+.heading {
+  font-size: 3rem;
+  text-align: center;
+  padding: 1%;
+}
+
+/* For tablet */
+@media only screen and (min-width: 768px) and (max-width: 991px) {
+  .heading {
+    font-size: 4rem;
+  }
+}
+
+/* For smaller computers */
+@media only screen and (min-width: 992px) and (max-width: 1299px) {
+  .heading {
+    font-size: 4rem;
+    text-align: left;
+  }
+}
+
+/* For larger computer */
+@media only screen and (min-width: 1300px) {
+  .heading {
+    font-size: 5rem;
+    text-align: left;
+  }
+}
+
+/* Subheading styles */
+.subheading {
+  font-family: 'Railway', sans-serif;
+  font-weight: 500;
+  /* Medium */
+  color: #f9faf2;
+  margin: 0;
+  text-align: center;
+}
+
+/* Default for mobile */
+.subheading {
+  font-size: 1.2rem;
+  padding: 2%;
+}
+
+/* For tablet */
+@media only screen and (min-width: 768px) and (max-width: 991px) {
+  .subheading {
+    font-size: 1.6rem;
+  }
+}
+
+/* For smaller computers */
+@media only screen and (min-width: 992px) and (max-width: 1299px) {
+  .subheading {
+    font-size: 1.5rem;
+    text-align: left;
+  }
+}
+
+/* For larger computer */
+@media only screen and (min-width: 1300px) {
+  .subheading {
+    font-size: 1.6rem;
+    text-align: left;
+  }
+}
