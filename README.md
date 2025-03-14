@@ -1,70 +1,53 @@
-# Getting Started with Create React App
+# Receipt Money
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+![alt text](https://raw.githubusercontent.com/receipt-money/website/refs/heads/main/images/image0-p-800.png)
 
-## Available Scripts
 
-In the project directory, you can run:
+A DeFi platform revolutionizing liquidity through Crypto Receipts, integrating AI agents for optimized asset management.
 
-### `npm start`
+## Description:
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
+Receipt Money addresses the liquidity challenges in decentralized finance by introducing Crypto Receipts (CRs). Inspired by traditional bank receipts, CRs tokenize staked or locked assets, allowing users to unlock liquidity without forfeiting rewards. Built on the Solana blockchain, Receipt Money ensures high-speed, low-cost transactions, enhancing capital efficiency for DeFi participants. Future versions aim to integrate AI agents (Def
+Ai) to automate yield optimization and asset management strategies.
 
-The page will reload when you make changes.\
-You may also see any lint errors in the console.
 
-### `npm test`
+## Features:
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+- Crypto Receipts (CRs): Tokenize staked assets to unlock liquidity.
+- AI Integration (DefAi): Automate yield optimization and asset management.
+- Multi-Asset Support: Handle various assets, including tokenized assets. 
+- Cross-Chain Compatibility: Utilize Solana's Wormhole for interoperability.
+- User-Friendly Interface: Simplify DeFi interactions for all user levels.
 
-### `npm run build`
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+## Usage
+Access the Platform:
+Open your browser and navigate to `https://app.receipt.money/`
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+- Connect Your Wallet:
+Use compatible wallets (e.g., Phantom) to connect to the platform.
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+- Mint Crypto Receipts:
+Deposit supported assets into the platform.
 
-### `npm run eject`
+- Mint corresponding CR tokens (e.g., deposit SOL to receive CR-SOL).
+Utilize CR Tokens:
 
-**Note: this is a one-way operation. Once you `eject`, you can't go back!**
+- Trade CR tokens on integrated DEXs.
+Use CR tokens as collateral for lending or yield farming.
 
-If you aren't satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+## Roadmap
+- Launch core MVP with CR minting and redemption on Solana Testnet.
 
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you're on your own.
+- Integrate with DeFi protocols like Raydium and Solend; expand asset support.
 
-You don't have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn't feel obligated to use this feature. However we understand that this tool wouldn't be useful if you couldn't customize it when you are ready for it.
+- Deploy AI agents for automated asset management; enhance cross-chain capabilities.
 
-## Learn More
+- Introduce tokenized receipts for real-world assets; establish partnerships with traditional financial institutions.
 
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
+## 10. Contact
+For inquiries or support:
 
-To learn React, check out the [React documentation](https://reactjs.org/).
+`Email: contact@receipt.money`
 
-### Code Splitting
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
-
-### Analyzing the Bundle Size
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
-
-### Making a Progressive Web App
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
-
-### Advanced Configuration
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
-
-### Deployment
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
-
-### `npm run build` fails to minify
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
+`Twitter: @cryptorcpts`
