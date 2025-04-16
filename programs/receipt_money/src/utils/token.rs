@@ -18,15 +18,8 @@ use anchor_spl::{
         spl_token_2022::extension::BaseStateWithExtensions,
         Mint,
     },
+    metadata::{self, Metadata, mpl_token_metadata::types::DataV2, CreateMetadataAccountsV3},
 };
-use std::collections::HashSet;
-
-const MINT_WHITELIST: [&'static str; 4] = [
-    "HVbpJAQGNpkgBaYBZQBR1t7yFdvaYVp2vCQQfKKEN4tM",
-    "Crn4x1Y2HUKko7ox2EZMT6N2t2ZyH7eKtwkBGVnhEq1g",
-    "FrBfWJ4qE5sCzKm3k3JaAtqZcXUh4LvJygDeketsrsH4",
-    "2b1kV6DkPAnxd5ixfnxCpjxmKwqjjaYmCZfHsFu24GXo",
-];
 
 pub fn transfer_from_user_to_token_vault<'a>(
     authority: AccountInfo<'a>,
@@ -180,10 +173,6 @@ pub fn is_supported_mint(mint_account: &InterfaceAccount<Mint>) -> Result<bool> 
     if *mint_info.owner == Token::id() {
         return Ok(true);
     }
-    let mint_whitelist: HashSet<&str> = MINT_WHITELIST.into_iter().collect();
-    if mint_whitelist.contains(mint_account.key().to_string().as_str()) {
-        return Ok(true);
-    }
     let mint_data = mint_info.try_borrow_data()?;
     let mint = StateWithExtensions::<spl_token_2022::state::Mint>::unpack(&mint_data)?;
     let extensions = mint.get_extension_types()?;
@@ -294,4 +283,47 @@ pub fn create_or_allocate_account<'a>(
         system_program::assign(cpi_context.with_signer(&[siger_seed]), program_id)?;
     }
     Ok(())
+}
+
+pub fn create_metaplex_metadata<'info>(
+    name: &str,
+    symbol: &str,
+    uri: &str,
+    token_mint: &AccountInfo<'info>,
+    mint_authority: &AccountInfo<'info>,
+    update_authority: &AccountInfo<'info>,
+    metadata_account: &UncheckedAccount<'info>,
+    metadata_program: &Program<'info, Metadata>,
+    funder: &AccountInfo<'info>,
+    rent: &AccountInfo<'info>,
+    system_program: &AccountInfo<'info>,
+    seeds: &[&[u8]],
+) -> Result<()> {
+    metadata::create_metadata_accounts_v3(
+        CpiContext::new_with_signer(
+            metadata_program.to_account_info(),
+            CreateMetadataAccountsV3 {
+                metadata: metadata_account.to_account_info(),
+                mint: token_mint.to_account_info(),
+                mint_authority: mint_authority.to_account_info(),
+                update_authority: update_authority.to_account_info(),
+                payer: funder.to_account_info(),
+                rent: rent.to_account_info(),
+                system_program: system_program.to_account_info(),
+            },
+            &[&seeds],
+        ),
+        DataV2 {
+            name: name.to_string(),
+            symbol: symbol.to_string(),
+            uri: uri.to_string(),
+            creators: None,
+            seller_fee_basis_points: 0,
+            collection: None,
+            uses: None,
+        },
+        true,
+        false,
+        None,
+    )
 }

@@ -6,3 +6,9 @@ node_modules
 test-ledger
 .yarn
 .keys
+.history
+.claude
+.cursor
+.cursorrules
+.clinerules
+memory-bank

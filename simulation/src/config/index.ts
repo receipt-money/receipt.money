@@ -35,8 +35,8 @@ export const TOKEN_METADATA_PROGRAM_ID = new PublicKey("metaqbxxUerdq28cj1RbAWkY
 
 export const SOL_DEVNET_MINT = new PublicKey("So11111111111111111111111111111111111111112");
 export const USDC_DEVNET_MINT = new PublicKey("4zMMC9srt5Ri5X14GAgXhaHii3GnPAEERYPJgZJDncDU");
-// export const ETH_DEVNET_MINT = new PublicKey("222222222222222222222222222222222222222222");
-// export const BTC_DEVNET_MINT = new PublicKey("333333333333333333333333333333333333333333");
+export const MSOL_DEVNET_MINT = new PublicKey("mSoLzYCxHdYgdzU16g5QSh3i5K3z3KZK7ytfqcJm7So");
+export const JITO_SOL_DEVNET_MINT = new PublicKey("jtojtomepa8beP8AuQc6eXt5FriJwfFMwQx2v2f9mCL");
 
 export const [receiptStateDevnetSol, receiptStateDevnetSolBump] = PublicKey.findProgramAddressSync(
     [

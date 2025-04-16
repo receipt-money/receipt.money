@@ -17,7 +17,7 @@ import { BN, Program } from "@coral-xyz/anchor";
 import { ReceiptMoney } from "../../targets/types/receipt_money";
 import { getAllPDAs } from "../pda";
 import { wrapSOL } from "../utils/wrapUnwrapSol";
-import { SOL_DEVNET_MINT } from "../config";
+import { SOL_DEVNET_MINT, MSOL_DEVNET_MINT, JITO_SOL_DEVNET_MINT } from "../config";
 
 export const deposit = async (
     connection: Connection,

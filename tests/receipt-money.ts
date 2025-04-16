@@ -10,7 +10,9 @@ describe("receipt_money", () => {
 
   it("Is initialized!", async () => {
     // Add your test here.
-    const tx = await program.methods.initialize().rpc();
+    const tx = await program.methods
+      .initialize("Crypto Receipt Token", "CRT", "https://example.com/token")
+      .rpc();
     console.log("Your transaction signature", tx);
   });
 });

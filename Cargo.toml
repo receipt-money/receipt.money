@@ -16,5 +16,6 @@ codegen-units = 1
 [workspace.dependencies]
 anchor-lang = { version = "0.30.1", features = ["init-if-needed"] }
 anchor-spl = { version = "0.30.1" , features = ["mint", "spl-token", "token", "metadata"]}
-mpl-token-metadata = { version = "3.2.3"}
-solana-security-txt = "1.1.1"
+spl-token-metadata-interface = { version = "=0.3.3" }
+solana-program = { version = "1.18.25" }
+spl-type-length-value = "0.4.3"

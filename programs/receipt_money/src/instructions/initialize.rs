@@ -1,10 +1,23 @@
 use anchor_lang::{
     accounts::interface_account::InterfaceAccount,
     prelude::*,
+    solana_program::rent::{DEFAULT_EXEMPTION_THRESHOLD, DEFAULT_LAMPORTS_PER_BYTE_YEAR},
+    system_program::{transfer, Transfer},
 };
-use anchor_spl::token_interface::{Mint, TokenInterface};
+use anchor_spl::token_interface::{
+    Mint, TokenInterface, token_metadata_initialize, TokenMetadataInitialize,
+};
+use spl_token_metadata_interface::state::TokenMetadata;
 use crate::state::ReceiptState;
 use crate::utils::token::create_token_account;
+use spl_type_length_value::variable_len_pack::VariableLenPack;
+
+#[derive(AnchorDeserialize, AnchorSerialize)]
+pub struct TokenMetadataArgs {
+    pub name: String,
+    pub symbol: String,
+    pub uri: String,
+}
 
 #[derive(Accounts)]
 pub struct Initialize<'info> {
@@ -35,19 +48,6 @@ pub struct Initialize<'info> {
     /// CHECK: This is both vault authority and mint authority of crToken
     pub vault_authority: UncheckedAccount<'info>,
     
-    // #[account(
-    //     init,
-    //     seeds = [
-    //         ReceiptState::TOKEN_MINT_VAULT_SEED,
-    //         receipt_state.key().as_ref(),
-    //     ],
-    //     bump,
-    //     payer = authority,
-    //     token::mint = token_mint,
-    //     token::authority = vault_authority,
-    //     token::token_program = token_mint_program,   
-    // )]
-    // pub token_mint_vault: Box<InterfaceAccount<'info, TokenAccount>>,
     /// CHECK: This is the token mint vault
     #[account(
         mut,
@@ -72,22 +72,11 @@ pub struct Initialize<'info> {
         mint::authority = vault_authority,
         mint::freeze_authority = vault_authority,
         mint::token_program = crypto_receipt_mint_program,
+        extensions::metadata_pointer::authority = vault_authority,
+        extensions::metadata_pointer::metadata_address = crypto_receipt_mint,
     )]
     pub crypto_receipt_mint: Box<InterfaceAccount<'info, Mint>>,
 
-    // #[account(
-    //     init,
-    //     seeds = [
-    //         ReceiptState::MINT_VAULT_SEED, 
-    //         receipt_state.key().as_ref(),
-    //     ],
-    //     bump,
-    //     payer = authority,
-    //     token::mint = crypto_receipt_mint,
-    //     token::authority = vault_authority,
-    //     token::token_program = crypto_receipt_mint_program,
-    // )]
-    // pub crypto_receipt_mint_vault: Box<InterfaceAccount<'info, TokenAccount>>,
     /// CHECK: This is the crypto receipt mint vault
     #[account(
         mut,
@@ -108,7 +97,11 @@ pub struct Initialize<'info> {
     pub rent: Sysvar<'info, Rent>,
 } 
 
-pub fn handle_initialize(ctx: Context<Initialize>) -> Result<()> {
+pub fn handle_initialize(
+    ctx: Context<Initialize>, 
+    args: TokenMetadataArgs,
+) -> Result<()> {
+    let TokenMetadataArgs { name, symbol, uri } = args;
 
     // due to stack/heap limitations, we have to create redundant new token vault accounts ourselves
     create_token_account(
@@ -140,6 +133,56 @@ pub fn handle_initialize(ctx: Context<Initialize>) -> Result<()> {
             &[ctx.bumps.crypto_receipt_mint_vault][..],
         ][..],
     )?;
+
+     // Define token metadata
+     let token_metadata = TokenMetadata {
+        name: name.clone(),
+        symbol: symbol.clone(),
+        uri: uri.clone(),
+        ..Default::default()
+    };
+     // Add 4 extra bytes for size of MetadataExtension (2 bytes for type, 2 bytes for length)
+     let data_len = 4 + token_metadata.get_packed_len()?;
+
+     // Calculate lamports required for the additional metadata
+     let lamports =
+         data_len as u64 * DEFAULT_LAMPORTS_PER_BYTE_YEAR * DEFAULT_EXEMPTION_THRESHOLD as u64;
+    // Transfer additional lamports to mint account for metadata
+    transfer(
+        CpiContext::new(
+            ctx.accounts.system_program.to_account_info(),
+            Transfer {
+                from: ctx.accounts.authority.to_account_info(),
+                to: ctx.accounts.crypto_receipt_mint.to_account_info(),
+            },
+        ),
+        lamports,
+    )?;
+    let receipt_state_key = ctx.accounts.receipt_state.key();
+    let auth_seeds = &[
+        ReceiptState::VAULT_AUTHORITY_SEED.as_bytes(), 
+        receipt_state_key.as_ref(), 
+        &[ctx.bumps.vault_authority]
+    ];
+    let signer = &[&auth_seeds[..]];
+    // Initialize token metadata
+    token_metadata_initialize(
+        CpiContext::new_with_signer(
+            ctx.accounts.crypto_receipt_mint_program.to_account_info(),
+            TokenMetadataInitialize {
+                token_program_id: ctx.accounts.crypto_receipt_mint_program.to_account_info(),
+                mint: ctx.accounts.crypto_receipt_mint.to_account_info(),
+                metadata: ctx.accounts.crypto_receipt_mint.to_account_info(),
+                mint_authority: ctx.accounts.vault_authority.to_account_info(),
+                update_authority: ctx.accounts.vault_authority.to_account_info(),
+            },
+            signer,
+        ),
+        name,
+        symbol,
+        uri,
+    )?;
+
     let receipt_state = &mut ctx.accounts.receipt_state;
     receipt_state.authority = ctx.accounts.authority.key();
     receipt_state.token_mint = ctx.accounts.token_mint.key();
