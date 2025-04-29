@@ -8,7 +8,7 @@ pub mod errors;
 use instructions::*;
 use instructions::initialize::TokenMetadataArgs;
 
-declare_id!("ReMoLWd9XjJQTuSoT9tuKtfbjGy8FtVXX3dqgBHg1gy");
+declare_id!("RMcr2nvyrwCh89SvH47916S9TCvPkoGBPNR8E1d1LWa");
 
 #[program]
 pub mod receipt_money {

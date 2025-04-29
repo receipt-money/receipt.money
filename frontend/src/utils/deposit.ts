@@ -25,7 +25,7 @@ export const MSOL_MINT = new PublicKey('mSoLzYCxHdYgdzU16g5QSh3i5K3z3KZK7ytfqcJm
 export const JITOSOL_MINT = new PublicKey('jtojtomepa8beP8AuQc6eXt5FriJwfFMwQx2v2f9mCL');
 
 // Program ID from the IDL
-export const PROGRAM_ID = new PublicKey('ReMoLWd9XjJQTuSoT9tuKtfbjGy8FtVXX3dqgBHg1gy');
+export const PROGRAM_ID = new PublicKey('RMcr2nvyrwCh89SvH47916S9TCvPkoGBPNR8E1d1LWa');
 
 interface DepositParams {
   connection: Connection;

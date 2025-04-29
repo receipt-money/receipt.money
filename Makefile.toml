@@ -16,7 +16,7 @@ dependencies = ["build_program"]
 
 [tasks.copy_files]
 script = """
-anchor idl upgrade -f target/idl/receipt_money.json ReMoLWd9XjJQTuSoT9tuKtfbjGy8FtVXX3dqgBHg1gy
+anchor idl upgrade -f target/idl/receipt_money.json RMcr2nvyrwCh89SvH47916S9TCvPkoGBPNR8E1d1LWa
 cp target/idl/receipt_money.json simulation/targets/idl/receipt_money.json
 cp target/types/receipt_money.ts simulation/targets/types/receipt_money.ts
 cp target/types/receipt_money.ts simulation/src/types/receipt_money.ts

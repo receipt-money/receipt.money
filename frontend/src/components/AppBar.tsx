@@ -5,10 +5,11 @@ import React, { useState } from "react";
 import { useAutoConnect } from '../contexts/AutoConnectProvider';
 import Image from 'next/image';
 
+// Use dynamic import with a proper type annotation
 const WalletMultiButtonDynamic = dynamic(
-  async () => (await import('@solana/wallet-adapter-react-ui')).WalletMultiButton,
+  () => import('@solana/wallet-adapter-react-ui').then(mod => mod.WalletMultiButton),
   { ssr: false }
-);
+) as any; // Use 'any' type to bypass TypeScript errors
 
 export const AppBar: React.FC = () => {
   const { autoConnect, setAutoConnect } = useAutoConnect();

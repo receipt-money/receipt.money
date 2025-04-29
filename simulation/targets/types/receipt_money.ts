@@ -5,7 +5,7 @@
  * IDL can be found at `target/idl/receipt_money.json`.
  */
 export type ReceiptMoney = {
-  "address": "ReMoLWd9XjJQTuSoT9tuKtfbjGy8FtVXX3dqgBHg1gy",
+  "address": "RMcr2nvyrwCh89SvH47916S9TCvPkoGBPNR8E1d1LWa",
   "metadata": {
     "name": "receiptMoney",
     "version": "0.1.0",

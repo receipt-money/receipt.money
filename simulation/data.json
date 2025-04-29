@@ -1,4 +1,10 @@
 {
-  "tokenMintAddress": "E3qAEKbJC6nfv6gyFQDnHTb8RL3c6eqs6fgEpAGNakos",
-  "cryptoReceiptMintAddress": "EtWBianaAZruHpoEyB8S4HLu78vC1ScQczmd7hhawURW"
+  "tokenMintAddress": "4zMMC9srt5Ri5X14GAgXhaHii3GnPAEERYPJgZJDncDU",
+  "cryptoReceiptMintAddress": "12Jk4LjCB5dxWw4iypE12MY9cvgEL3Byq2MDz7sKmSEp",
+  "solMintAddress": "So11111111111111111111111111111111111111112",
+  "solCryptoReceiptMintAddress": "5nMkcCfKyZQZfrfGP9SNvXioudiQ2U2LEi2qngMSUAfY",
+  "usdcMintAddress": "4zMMC9srt5Ri5X14GAgXhaHii3GnPAEERYPJgZJDncDU",
+  "usdcCryptoReceiptMintAddress": "EnNQFeK7tt6qZdPc7CMvGRBdwbr2YTVBC7HpD4EL6R3s",
+  "msolMintAddress": "mSoLzYCxHdYgdzU16g5QSh3i5K3z3KZK7ytfqcJm7So",
+  "msolCryptoReceiptMintAddress": "5spv4JT7BZdo5N9Fum5E9BB86bDkvhNnuhW16pgvgYca"
 }

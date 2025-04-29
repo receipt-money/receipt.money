@@ -7,7 +7,7 @@ resolution = true
 skip-lint = false
 
 [programs.devnet]
-receipt_money = "ReMoLWd9XjJQTuSoT9tuKtfbjGy8FtVXX3dqgBHg1gy"
+receipt_money = "RMcr2nvyrwCh89SvH47916S9TCvPkoGBPNR8E1d1LWa"
 
 [registry]
 url = "https://api.apr.dev"
